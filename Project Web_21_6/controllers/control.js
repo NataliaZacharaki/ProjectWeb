@@ -7,7 +7,6 @@ var session = require('express-session')
 const app = express()
 const  bodyParser= require('body-parser');
 const bcrypt = require('bcrypt');
-const cloudinary = require('cloudinary');
 var multer = require('multer');
 var fileupload= require('express-fileupload');
 const { ResumeToken } = require('mongodb');
@@ -15,8 +14,7 @@ var upload = multer({ dest: './public/images/'});
 const handlebars = require('handlebars');
 
 
-//username_for_navbar is a variable that keeps the username of the account for the whole session
-let username_for_navbar = "";
+//req.session.username is a variable that keeps the username of the account for the whole session
 
 let kind = "";
 let logout="";
@@ -25,7 +23,7 @@ let logout="";
 exports.sendArxiki = function (req, res) {
     try{
        
-        res.render('arxiki',{username:username_for_navbar,logout:logout});
+        res.render('arxiki',{username:req.session.username,logout:logout});
     }
 
     catch(err){
@@ -37,7 +35,7 @@ exports.sendArxiki = function (req, res) {
 exports.sendSignUp = function (req, res) {
     try{
        
-    res.render('sign-up',{username:username_for_navbar,logout:logout});
+    res.render('sign-up',{username:req.session.username,logout:logout});
 
     }
     catch(err){
@@ -86,7 +84,7 @@ exports.sendDataSignUp = function (req, res) {
 exports.sendOwners = function (req, res) {
 
     try{
-        res.render('sign-up-owner',{username:username_for_navbar,logout:logout});
+        res.render('sign-up-owner',{username:req.session.username,logout:logout});
     }
 
     catch(err){
@@ -129,7 +127,7 @@ exports.sendDataOwners = function (req, res) {
 
             
             //checking for the data authentication
-            if(check_password(req.body.password,req.body.repeat_password)==-1)  res.render('sign-up-owner',{username:username_for_navbar,logout:logout});
+            if(check_password(req.body.password,req.body.repeat_password)==-1)  res.render('sign-up-owner',{username:req.session.username,logout:logout});
             else if(check_password(req.body.password,req.body.repeat_password)==1){
         
                 
@@ -172,7 +170,7 @@ exports.sendDataOwners = function (req, res) {
 //returns the log in page
 exports.sendLogin = function (req, res) {
     try{
-       res.render('login',{username:username_for_navbar,logout:logout})
+       res.render('login',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -199,10 +197,10 @@ exports.sendDataLogin = function (req, res) {
                     if(response) {
 
                         //set username as a global variable to be used 
-                        username_for_navbar=req.body.username;
+                        req.session.username=req.body.username;
 
                         logout="Αποσύνδεση"
-                        res.render('arxiki',{username:username_for_navbar,logout:logout});
+                        res.render('arxiki',{username:req.session.username,logout:logout});
                     
                    
                     } else {
@@ -221,11 +219,11 @@ exports.sendDataLogin = function (req, res) {
 exports.sendLogout = function (req, res) {
     try{
        
-        username_for_navbar="";
+        req.session.username="";
         logout="";
 
         //reset the username
-        res.render('arxiki',{username:username_for_navbar,logout:logout})
+        res.render('arxiki',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -237,7 +235,7 @@ exports.sendLogout = function (req, res) {
 exports.sendTrainMenu = function (req, res) {
     try{
        
-        res.render('train_menu',{username:username_for_navbar,logout:logout});
+        res.render('train_menu',{username:req.session.username,logout:logout});
     }
 
     catch(err){
@@ -249,7 +247,7 @@ exports.sendTrainMenu = function (req, res) {
 exports.sendPatraAthens = function (req, res) {
     try{
        
-        res.render('patra-athina',{username:username_for_navbar,logout:logout})
+        res.render('patra-athina',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -261,7 +259,7 @@ exports.sendPatraAthens = function (req, res) {
 exports.sendPatraAirport = function (req, res) {
     try{
        
-         res.render('patra-aerodromio',{username:username_for_navbar,logout:logout})
+         res.render('patra-aerodromio',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -273,7 +271,7 @@ exports.sendPatraAirport = function (req, res) {
 exports.sendPatraPeiraias = function (req, res) {
     try{
  
-        res.render('patra-peiraias',{username:username_for_navbar,logout:logout})
+        res.render('patra-peiraias',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -285,7 +283,7 @@ exports.sendPatraPeiraias = function (req, res) {
 exports.sendProastiakos = function (req, res) {
     try{
        
-         res.render('proastiakos',{username:username_for_navbar,logout:logout})
+         res.render('proastiakos',{username:req.session.username,logout:logout})
          
     }
 
@@ -298,7 +296,7 @@ exports.sendProastiakos = function (req, res) {
 exports.sendPloioMenu = function (req, res) {
     try{
        
-        res.render('ploiomenu',{username:username_for_navbar,logout:logout});
+        res.render('ploiomenu',{username:req.session.username,logout:logout});
     }
 
     catch(err){
@@ -310,7 +308,7 @@ exports.sendPloioMenu = function (req, res) {
 exports.sendPorthmeio = function (req, res) {
     try{
        
-        res.render('porthmeio',{username:username_for_navbar,logout:logout})
+        res.render('porthmeio',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -322,7 +320,7 @@ exports.sendPorthmeio = function (req, res) {
 exports.sendLimani = function (req, res) {
     try{
        
-       res.render('limani',{username:username_for_navbar,logout:logout})
+       res.render('limani',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -334,7 +332,7 @@ exports.sendLimani = function (req, res) {
 exports.sendMarina = function (req, res) {
     try{
        
-       res.render('marina',{username:username_for_navbar,logout:logout})
+       res.render('marina',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -346,7 +344,7 @@ exports.sendMarina = function (req, res) {
 exports.sendKefalonia = function (req, res) {
     try{
        
-       res.render('kefalonia',{username:username_for_navbar,logout:logout})
+       res.render('kefalonia',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -358,7 +356,7 @@ exports.sendKefalonia = function (req, res) {
 exports.sendAutokinhto = function (req, res) {
     try{
        
-       res.render('autokinhto',{username:username_for_navbar,logout:logout})
+       res.render('autokinhto',{username:req.session.username,logout:logout})
     }
 
     catch(err){
@@ -434,11 +432,11 @@ exports.sendCoffee = function (req, res) {
 
 
                 //if the user is logged in he can write a comment, whereas if he isn't logged in he can only see the posted ones
-                if(username_for_navbar==""){
-                    res.render('proposal_without_login',{data_database:list_of_objects,username:username_for_navbar,review_data_database:list_of_reviews,counter,logout:logout})
+                if(req.session.username==""){
+                    res.render('proposal_without_login',{data_database:list_of_objects,username:req.session.username,review_data_database:list_of_reviews,counter,logout:logout})
                 }
                 else{
-                res.render('proposal',{data_database:list_of_objects,username:username_for_navbar,review_data_database:list_of_reviews,counter,logout:logout})
+                res.render('proposal',{data_database:list_of_objects,username:req.session.username,review_data_database:list_of_reviews,counter,logout:logout})
                 
                 kind='kafe';
                 }
@@ -454,7 +452,7 @@ exports.sendCoffee = function (req, res) {
 exports.sendDataReview = function (req, res) {
     try{
         //call the review function of the operations.js to save the review if it is validated
-        model.review(req.body,req.files, kind,username_for_navbar,function(err, req){
+        model.review(req.body,req.files, kind,req.session.username,function(err, req){
             if(err) res.send(err);
         });
 
@@ -481,7 +479,7 @@ exports.sendDiamonh = function (req, res) {
             handlebars.registerHelper('times', require('handlebars-helper-repeat'));
 
             //return the .hbs file
-            res.render('diamonh',{hotel:diamonh(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('diamonh',{hotel:diamonh(data_from_database),username:req.session.username,logout:logout})
             
         });
       
@@ -559,11 +557,11 @@ exports.sendGluko = function (req, res) {
                 counter=review_data_from_database.length;
 
                 //if the user is logged in he can leave a review/comment, otherwise he can only read the existing ones
-                if(username_for_navbar==""){
-                    res.render('proposal_without_login',{data_database:list_of_objects,username:username_for_navbar,review_data_database:list_of_reviews,counter,logout:logout})
+                if(req.session.username==""){
+                    res.render('proposal_without_login',{data_database:list_of_objects,username:req.session.username,review_data_database:list_of_reviews,counter,logout:logout})
                 }
                 else{
-                    res.render('proposal',{data_database:list_of_objects,username:username_for_navbar,review_data_database:list_of_reviews,counter,logout:logout})
+                    res.render('proposal',{data_database:list_of_objects,username:req.session.username,review_data_database:list_of_reviews,counter,logout:logout})
                     kind='gluko';
 
                 }
@@ -644,11 +642,11 @@ exports.sendFaghto = function (req, res) {
                 counter=review_data_from_database.length;
 
                 //if the user is logged in he can leave a review/comment, otherwise he can only read the existing ones
-                if(username_for_navbar==""){
-                    res.render('proposal_without_login',{data_database:list_of_objects,username:username_for_navbar,review_data_database:list_of_reviews,counter,logout:logout})
+                if(req.session.username==""){
+                    res.render('proposal_without_login',{data_database:list_of_objects,username:req.session.username,review_data_database:list_of_reviews,counter,logout:logout})
                 }
                 else{
-                res.render('proposal',{data_database:list_of_objects,username:username_for_navbar,review_data_database:list_of_reviews,counter,logout:logout})
+                res.render('proposal',{data_database:list_of_objects,username:req.session.username,review_data_database:list_of_reviews,counter,logout:logout})
                 kind='faghto';
                 }
             });
@@ -722,11 +720,11 @@ exports.sendPoto = function (req, res) {
                 counter=review_data_from_database.length;
 
                 //if the user is logged in he can leave a review/comment, otherwise he can only read the existing ones
-                if(username_for_navbar==""){
-                    res.render('proposal_without_login',{data_database:list_of_objects,username:username_for_navbar,review_data_database:list_of_reviews,counter,logout:logout})
+                if(req.session.username==""){
+                    res.render('proposal_without_login',{data_database:list_of_objects,username:req.session.username,review_data_database:list_of_reviews,counter,logout:logout})
                 }
                 else{
-                res.render('proposal',{data_database:list_of_objects,username:username_for_navbar,review_data_database:list_of_reviews,counter,logout:logout})
+                res.render('proposal',{data_database:list_of_objects,username:req.session.username,review_data_database:list_of_reviews,counter,logout:logout})
                 
                 kind='poto';
                 }
@@ -748,7 +746,7 @@ exports.sendAgioAndrea = function (req, res) {
         model.returnSight('Agios_Andreas',function(err,data_from_database){
             if(err) res.send(err);
 
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})
             
         });
    
@@ -767,7 +765,7 @@ exports.sendAchaiaClauss = function (req, res) {
         //returnSight is called to return all info associated to the 'Achaia_Clauss' sight
         model.returnSight('Achaia_Clauss',function(err,data_from_database){
             if(err) res.send(err);
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})
 
         });
     }
@@ -838,13 +836,13 @@ exports.sendCarnival = function (req, res) {
 
                 //if the user is logged in, he can leave a comment/story or/and upload at least one image 
                 //whereas if he isn't conected he can only see the existing images and comments
-                if(username_for_navbar==""){
+                if(req.session.username==""){
 
-                    res.render('carnival_without_login',{username:username_for_navbar,gallery_data_database:list_of_images,review_data_database:list_of_reviews,counter,logout:logout});
+                    res.render('carnival_without_login',{username:req.session.username,gallery_data_database:list_of_images,review_data_database:list_of_reviews,counter,logout:logout});
                     console.log('Παρακαλώ βεβαιωθείτε ότι είστε συνδεδεμένος.');
                 }
                 else{
-                    res.render('carnival',{username:username_for_navbar,gallery_data_database:list_of_images,review_data_database:list_of_reviews,counter,logout:logout});
+                    res.render('carnival',{username:req.session.username,gallery_data_database:list_of_images,review_data_database:list_of_reviews,counter,logout:logout});
                     kind='carnival';
                 }
             
@@ -865,7 +863,7 @@ exports.sendApollon = function (req, res) {
 
             if(err) res.send(err);
 
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})         
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})         
         });
     }
     catch(err){
@@ -882,7 +880,7 @@ exports.sendWdeio = function (req, res) {
 
             if(err) res.send(err);
             
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})
             
         });
 
@@ -901,7 +899,7 @@ exports.sendMouseio = function (req, res) {
         model.returnSight('Mouseio',function(err,data_from_database){
             if(err) res.send(err);
             
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})
             
             
         });
@@ -922,7 +920,7 @@ exports.sendFaros = function (req, res) {
 
             if(err) res.send(err);
             
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})
             
         });
     }
@@ -942,7 +940,7 @@ exports.sendKastro = function (req, res) {
 
             if(err) res.send(err);
             
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})
             
         });
     }
@@ -960,7 +958,7 @@ exports.sendKastroRiou = function (req, res) {
         model.returnSight('Kastro_riou',function(err,data_from_database){
             if(err) res.send(err);
             
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})
             
         });
     }
@@ -979,7 +977,7 @@ exports.sendGefura = function (req, res) {
 
             if(err) res.send(err);
             
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})
             
         });
     }
@@ -997,7 +995,7 @@ exports.sendUdragwgeio = function (req, res) {
 
             if(err) res.send(err);
             
-            res.render('aksiotheata',{data:list_objects(data_from_database),username:username_for_navbar,logout:logout})
+            res.render('aksiotheata',{data:list_objects(data_from_database),username:req.session.username,logout:logout})
             
         });
     }

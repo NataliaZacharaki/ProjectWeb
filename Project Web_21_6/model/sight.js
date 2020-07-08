@@ -12,12 +12,10 @@ const sight_data = new mongoose.Schema({
   },
   info: {
     type: String
-   
+  
   },
   map: {
     type: String
-   
-    
   },
   video: {
     type: String

@@ -11,6 +11,7 @@ const User = require('./user.js');
 const Owner = require('./owner.js');
 //model about the collection of uploaded images from carnival page 
 const Gallery = require('./gallery.js');
+var session = require('express-session')
 
 //require mongoose to communicate with the db
 const mongoose = require('mongoose');
@@ -120,7 +121,7 @@ exports.returnUsers=function (callback) {
 }
 
 //review handling function
-exports.review=function(review,files,kind,username_for_navbar,callback){
+exports.review=function(review,files,kind,username,callback){
 
   //get the date of review posting in the form DD/MM/YYYY
   let date = new Date();
@@ -130,10 +131,10 @@ exports.review=function(review,files,kind,username_for_navbar,callback){
   let date_full=day+"-"+month+"-"+year;
 
   //check that the user is logged in
-  if ( typeof username_for_navbar !== 'undefined' && username_for_navbar && review.comment)
+  if ( typeof username !== 'undefined' && username && review.comment)
   {
     //save the review/comment
-    let new_review = {username:username_for_navbar, date:date_full, kind:kind, comment:review.comment, proposal_title: review.proposal_title};
+    let new_review = {username:username, date:date_full, kind:kind, comment:review.comment, proposal_title: review.proposal_title};
     console.log(new_review.username);
   
     //creation of a new document Review in db collection
@@ -155,7 +156,7 @@ exports.review=function(review,files,kind,username_for_navbar,callback){
 
       //save the image urls to the gallery collection
       //the urls will be inserted src="" to load the images and display them in our app
-      let new_gallery= {username:username_for_navbar, image:gallery_image};
+      let new_gallery= {username:req.session.username, image:gallery_image};
     
       var fgallery= new Gallery(new_gallery);
       fgallery.save(function (err, safe) {
